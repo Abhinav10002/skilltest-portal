@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="position: sticky; top: 80px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 99; margin-bottom: 20px; border: 1px solid #e5e7eb;">
+    <h2 style="margin: 0; font-size: 1.2rem;">{{ assessment.title }}</h2>
+    <div style="font-weight: bold; font-size: 1.2rem; color: #ef4444;">
+        Time Left: <span id="timer">Loading...</span>
+    </div>
+</div>
+
+<form id="assessmentForm" action="{% url 'submit_assessment' assessment.id %}" method="POST">
+    {% csrf_token %}
+    {% for question in assessment.questions.all %}
+        <div class="question-box">
+            <p class="question-text"><span style="color: var(--primary);">Q{{ forloop.counter }}.</span> {{ question.text }}</p>
+            
+            <div class="options">
+                {% for option in question.options.all %}
+                    <label for="opt_{{ option.id }}">
+                        <input type="radio" id="opt_{{ option.id }}" name="question_{{ question.id }}" value="{{ option.id }}">
+                        {{ option.text }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-block">Submit Assessment</button>
+</form>
+
+<script>
+    // Use the 'default' filter. If Python sends nothing, it defaults to 3600.
+    let timeLeft = {{ remaining_seconds|default:3600 }};
+    
+    console.log("Timer starting with:", timeLeft); // Check your browser Console (F12)
+    
+    const timerElement = document.getElementById('timer');
+    const form = document.getElementById('assessmentForm');
+
+    function updateTimer() {
+        if (timeLeft <= 0) {
+            timerElement.innerText = "00:00";
+            form.submit();
+            return;
+        }
+
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        timerElement.innerText = minutes + ":" + seconds;
+        timeLeft--;
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+</script>
+
+{% endblock %}

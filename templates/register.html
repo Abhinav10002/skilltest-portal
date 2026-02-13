@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h2 style="text-align: center; color: #2c3e50;">Student Registration</h2>
+    
+    <form method="POST" style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+        {% csrf_token %} <label>Full Name</label>
+        <input type="text" name="name" class="form-control" required placeholder="John Doe">
+
+        <label>Registration Number (ID)</label>
+        <input type="text" name="registration_number" class="form-control" required placeholder="e.g. STU12345">
+
+        <label>Email Address</label>
+        <input type="email" name="email" class="form-control" required placeholder="john@example.com">
+
+        <label>Mobile Number</label>
+        <input type="text" name="mobile_number" class="form-control" required placeholder="1234567890">
+
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+
+        <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">Register</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 15px;">
+        Already have an account? <a href="{% url 'student_login' %}" style="color: #3498db;">Login here</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 40px;">
+    <h2 style="font-size: 2rem; color: white;">Results: {{ assessment.title }}</h2>
+    <div style="display: inline-block; background: rgba(15, 23, 42, 0.6); padding: 15px 40px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px;">
+        <span style="font-size: 1.2rem; color: var(--text-light);">Your Score: </span>
+        <strong style="font-size: 1.5rem; color: #10b981;">{{ attempt.score }} / {{ assessment.questions.count }}</strong>
+    </div>
+</div>
+
+<div style="max-width: 800px; margin: 0 auto;">
+    {% for item in results_data %}
+        <div class="question-box" style="border-left: 4px solid {% if item.is_correct %}#10b981{% else %}#ef4444{% endif %};">
+            
+            <p class="question-text">
+                <span style="color: var(--text-light);">Q{{ forloop.counter }}.</span> {{ item.question.text }}
+                
+                {% if item.is_correct %}
+                    <span style="float: right; color: #10b981; font-size: 0.9rem;">✔️ Correct</span>
+                {% else %}
+                    <span style="float: right; color: #ef4444; font-size: 0.9rem;">❌ Incorrect</span>
+                {% endif %}
+            </p>
+            
+            <div style="margin-top: 15px; padding-left: 15px;">
+                <p style="margin-bottom: 8px;">
+                    <span style="color: var(--text-light); font-size: 0.9rem;">Your Answer:</span><br>
+                    {% if item.selected %}
+                        <span style="color: {% if item.is_correct %}#10b981{% else %}#ef4444{% endif %}; font-weight: 500;">
+                            {{ item.selected.text }}
+                        </span>
+                    {% else %}
+                        <span style="color: #ef4444; font-style: italic;">Skipped / Out of Time</span>
+                    {% endif %}
+                </p>
+
+                {% if not item.is_correct %}
+                    <p style="margin-top: 10px; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 8px;">
+                        <span style="color: #10b981; font-size: 0.9rem;">Correct Answer:</span><br>
+                        <span style="color: #10b981; font-weight: 500;">{{ item.correct.text }}</span>
+                    </p>
+                {% endif %}
+            </div>
+            
+        </div>
+    {% endfor %}
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="{% url 'student_dashboard' %}" class="btn">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

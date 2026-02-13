@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width: 400px; margin: 0 auto;">
+    <h2 style="color: #c0392b;">Admin Login</h2>
+    <form method="POST" style="border-top: 3px solid #c0392b; padding: 20px; background: #fff;">
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" required>
+        
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+        
+        <button type="submit" class="btn" style="background-color: #c0392b; width: 100%;">Login as Admin</button>
+    </form>
+</div>
+{% endblock %}

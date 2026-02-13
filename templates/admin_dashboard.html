@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2>Admin Dashboard</h2>
+    <a href="{% url 'create_assessment' %}" class="btn">＋ Create New Assessment</a>
+</div>
+
+<h3 style="border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 25px;">Manage Assessments</h3>
+
+<div class="assessment-list">
+    {% for test in assessments %}
+        <div class="assessment-card" style="border-top-color: #ef4444;"> <div style="flex-grow: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <h4 style="margin-bottom: 5px;">{{ test.title }}</h4>
+                    <span style="background: #e5e7eb; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; color: #4b5563;">
+                        {{ test.questions.count }} Qs
+                    </span>
+                </div>
+                
+                <p style="margin-bottom: 15px; min-height: 40px;">
+                    {{ test.description|truncatewords:15 }}
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: auto;">
+                <a href="{% url 'add_question' test.id %}" class="btn btn-small" style="flex: 1; text-align: center;">
+                    Edit / Add Qs
+                </a>
+
+                <a href="{% url 'delete_assessment' test.id %}" 
+                   class="btn btn-small" 
+                   style="background-color: #ef4444; flex: 1; text-align: center;"
+                   onclick="return confirm('Are you sure you want to delete \'{{ test.title }}\'?\nThis action cannot be undone.');">
+                    Delete
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: white; border-radius: 12px; box-shadow: var(--shadow);">
+            <p style="color: var(--text-light); margin-bottom: 20px;">No assessments created yet.</p>
+            <a href="{% url 'create_assessment' %}" class="btn">Create Your First Assessment</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2 style="color: white; margin: 0;">My Dashboard</h2>
+    <span style="color: var(--text-light);">Welcome back, <strong style="color: white;">{{ user.first_name }}</strong></span>
+</div>
+
+<h3 style="border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; margin-bottom: 25px; color: white;">
+    Available Assessments
+</h3>
+
+<div class="assessment-list">
+    {% for test in assessments %}
+        <div class="assessment-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            
+            <div style="margin-bottom: 20px;">
+                <h4>{{ test.title }}</h4>
+                <p>{{ test.description|truncatewords:20 }}</p>
+            </div>
+            
+            <div>
+                {% if test.id in attempted_ids %}
+                    <a href="{% url 'view_results' test.id %}" class="btn btn-block" 
+                       style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); text-align: center;">
+                        ✓ View Results
+                    </a>
+                {% else %}
+                    <a href="{% url 'take_assessment' test.id %}" class="btn btn-block" style="text-align: center;">
+                        Start Test →
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: rgba(30, 41, 59, 0.6); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
+            <p style="color: var(--text-light); margin: 0; font-size: 1.1rem;">No active assessments available right now.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
