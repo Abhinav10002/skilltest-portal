@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 
@@ -81,13 +82,9 @@ WSGI_APPLICATION = 'application.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "assessment_db",
-        "USER": "user",
-        "PASSWORD": "password",
-        "HOST": "db",
-        "PORT": "3306",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql', # Changed from .mysql
+        'NAME': os.environ.get('DATABASE_URL'),     # Render provides a single URL
     }
 }
 
