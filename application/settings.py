@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 
 
@@ -82,10 +83,9 @@ WSGI_APPLICATION = 'application.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql', # Changed from .mysql
-        'NAME': os.environ.get('DATABASE_URL'),     # Render provides a single URL
-    }
+    'default': dj_database_url.config(
+        default='postgresql://assessment_db_e01k_user:QoMFLIvcqav9aVE61ry9mXfQCLWVYnbE@dpg-d83ko8t7vvec739iteqg-a.virginia-postgres.render.com/assessment_db_e01k'
+    )
 }
 
 
